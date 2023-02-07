@@ -3,9 +3,9 @@ const router = express.Router();
 require("dotenv").config();
 const FinlendersProjectsSchema = require("../utils/connectToFinlendersProjects");
 
-router.get("/finlender-test", async (req, res) => {
-	console.log("ROUTE: /finlender-test");
-	res.send("flinlender is running");
+router.get("/finlenders-test", async (req, res) => {
+	console.log("ROUTE: /finlenders-test");
+	res.send("flinlenders is running");
 });
 
 //@route GET /projects
