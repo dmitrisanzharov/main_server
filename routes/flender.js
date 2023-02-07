@@ -30,6 +30,11 @@ let transporter = nodemailer.createTransport({
 
 // UNPROTECTED
 
+router.get("/flender-test", async (req, res) => {
+	console.log("ROUTE: /flender-test");
+	res.send("flenders is running");
+});
+
 //check if there is a duplicate (use email), and adds a new user
 router.post("/add-user", async (req, res) => {
 	console.log(req.body);
