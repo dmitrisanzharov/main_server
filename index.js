@@ -13,8 +13,8 @@ app.use(cors());
 app.use("/flender", require("./routes/flender"));
 app.use("/finlenders", require("./routes/finlenders"));
 
-app.listen(port, () => console.log(`listening on port: ${port}`));
-
 app.get("/home-test", async (req, res) => {
 	res.send("server is up and running");
 });
+
+app.listen(port, () => console.log(`listening on port: ${port}`));
