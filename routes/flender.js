@@ -11,11 +11,6 @@ const axios = require("axios");
 const uniqid = require("uniqid");
 const moment = require("moment");
 
-// VARIABLES
-
-const { connectToMongoDB_MainDB } = require("../utils/connectToMainMongoDB");
-connectToMongoDB_MainDB();
-
 let transporter = nodemailer.createTransport({
 	host: "mail.ee",
 	auth: {
