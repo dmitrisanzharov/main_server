@@ -50,14 +50,32 @@ router.get("/login", async (req, res) => {
 
 	try {
 		console.log("req.query", req.query);
+		const { email, password } = req.query;
 
-		// TODO get user by email
+		// get user by email - find out if user exists
+		const checkIfExists = await FlenderUsersSchema.findOne({ email: email });
+		console.log("checkIfExists: ", checkIfExists);
 
-		// todo if user does NOT exists
+		// if user does NOT exists
+		if (checkIfExists === null) {
+			console.log("no user found");
+			res.send("no_user_found");
+			return;
+		}
 
-		// todo if user exists but password is incorrect
+		// if user exists but password is incorrect
+		if (checkIfExists && checkIfExists.password !== password) {
+			console.log("password_is_incorrect");
+			res.send("password_is_incorrect");
+			return;
+		}
 
 		// todo if all is good, so send instruction to redirect and save user as a Session
+		if (checkIfExists && checkIfExists.password === password) {
+			console.log("user_found_success");
+			res.send(checkIfExists);
+			return;
+		}
 	} catch (error) {
 		console.log(error);
 	}
