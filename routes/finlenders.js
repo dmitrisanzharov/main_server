@@ -46,5 +46,36 @@ router.post("/invest", async (req, res) => {
 	}
 });
 
+router.get("/single-project", async (req, res) => {
+	console.log("===================================");
+	console.log("/single-project");
+
+	try {
+		// todo check if project is found
+		const { projectName } = req.query;
+		console.log("projectName: ", projectName);
+
+		// todo project is NOT found in the
+		const doesItExist = await FinlendersProjectsSchema.findOne({
+			projectName: projectName,
+		});
+		console.log("doesItExist: ", doesItExist);
+
+		if (!doesItExist) {
+			console.log("project_not_found, NO NOTHING");
+			return;
+		}
+		// todo project is FOUND
+		if (doesItExist) {
+			console.log("project is found");
+			res.send(doesItExist);
+			return;
+		}
+	} catch (error) {
+		console.log("error during fetch", error);
+		res.status(500).send({ error: "some sort of error" });
+	}
+});
+
 // should be at the end
 module.exports = router;
