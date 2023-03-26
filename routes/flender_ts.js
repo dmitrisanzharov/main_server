@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const FlenderUsersSchema = require("../model/flenderTsUserSchema");
+const nodemailer = require("nodemailer");
 require("dotenv").config();
+
+// variables
 
 // ROUTES
 router.post("/add-user", async (req, res) => {
@@ -78,6 +81,76 @@ router.get("/login", async (req, res) => {
 		}
 	} catch (error) {
 		console.log(error);
+		res.status(500).send({ error: "error, see server logs" });
+	}
+});
+
+router.get("/password-reset-email-page", async (req, res) => {
+	console.log("===================================");
+	console.log("/password-reset-email-page");
+	try {
+		const { email } = req.query;
+		console.log("email: ", email);
+
+		const linkToResetPasswordDev =
+			"http://localhost:3000/password-reset-page" + `?email=${email}`;
+
+		const doesItExist = await FlenderUsersSchema.findOne({ email: email });
+		console.log("doesItExist: ", doesItExist);
+
+		if (!doesItExist) {
+			console.log("email_does_not_exist");
+			res.send("email_does_not_exist");
+			return;
+		}
+
+		if (doesItExist) {
+			console.log("email is found, send reset link");
+			res.send("email_is_found");
+
+			let transporter = nodemailer.createTransport({
+				host: "mail.ee",
+				auth: {
+					user: "my_main_server@mail.ee", // usual email
+					pass: "Z3SZr6Eib8", // this has to be APP PASSWORD
+				},
+			});
+
+			let info = await transporter.sendMail({
+				from: "my_main_server@mail.ee", // sender address
+				to: "dmitrisanzharov@gmail.com", // list of receivers
+				subject: "Password reset link", // Subject line
+				html: `<h1>Here is your link</h1>
+				<a href=${linkToResetPasswordDev} target="_blank">link to reset password</a>`,
+			});
+
+			console.log("Message sent: %s", info.messageId);
+
+			return;
+		}
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ error: "error, see server logs" });
+	}
+});
+
+router.get("/password-reset-page", async (req, res) => {
+	console.log("===================================");
+	console.log("/password-reset-page");
+	try {
+		const { password, email } = req.query;
+		console.log("req.query", req.query);
+
+		let updateOne = await FlenderUsersSchema.findOneAndUpdate(
+			{ email: email },
+			{ password: password },
+			{ new: true }
+		);
+		console.log("updateOne: ", updateOne);
+		res.send("password_updated");
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ error: "error, see server logs" });
 	}
 });
 

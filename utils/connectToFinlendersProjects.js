@@ -9,6 +9,7 @@ const connection = mongoose.createConnection(
 connection.on(`error`, console.error.bind(console, `connection error:`));
 connection.once(`open`, function () {
 	console.log(`MongoDB connected to: Finlenders Projects`); // name of  the collection
+	console.log(`==========================`);
 });
 
 const AnyName = connection.model(

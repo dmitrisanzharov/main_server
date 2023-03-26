@@ -8,7 +8,10 @@ const connectToMongoDB_MainDB = () => {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 		})
-		.then(() => console.log("connected to mainDB Mongo"))
+		.then(() => {
+			console.log("connected to mainDB Mongo");
+			console.log("===========================");
+		})
 		.catch((err) => console.log(err));
 };
 
