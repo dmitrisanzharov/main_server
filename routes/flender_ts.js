@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const FlenderUsersSchema = require("../model/flenderTsUserSchema");
 const nodemailer = require("nodemailer");
+const moment = require("moment");
 require("dotenv").config();
 
 // variables
@@ -151,6 +152,102 @@ router.get("/password-reset-page", async (req, res) => {
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ error: "error, see server logs" });
+	}
+});
+
+router.get("/add-funds", async (req, res) => {
+	console.log("===================================");
+	console.log("/add-funds");
+	try {
+		console.log(req.query);
+		const { userId, amountInEuro } = req.query;
+
+		let addToUserTransaction = await FlenderUsersSchema.findByIdAndUpdate(
+			{ _id: userId },
+			{
+				$inc: { totalDeposits: amountInEuro },
+				$push: {
+					transactions: {
+						transactionType: "lodgement",
+						amountInEuro: amountInEuro,
+					},
+				},
+			},
+			{ new: true }
+		);
+		console.log("addToUserTransaction: ", addToUserTransaction);
+		console.log("money added successfully");
+
+		res.send(addToUserTransaction);
+		return;
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ error: "error, see server logs" });
+	}
+});
+
+router.get("/withdraw", async (req, res) => {
+	console.log("===================================");
+	console.log("/withdraw");
+	try {
+		console.log(req.query);
+		const { amount, userId } = req.query;
+
+		let addToUserTransaction = await FlenderUsersSchema.findByIdAndUpdate(
+			{ _id: userId },
+			{
+				$inc: { totalWithdrawals: amount },
+				$push: {
+					transactions: {
+						transactionType: "withdrawal",
+						amountInEuro: amount,
+					},
+				},
+			},
+			{ new: true }
+		);
+		console.log("addToUserTransaction: ", addToUserTransaction);
+		console.log("withdrawn successfully");
+
+		res.send(addToUserTransaction);
+		return;
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({ error: "error, see server logs" });
+	}
+});
+
+router.post("/invest", async (req, res) => {
+	console.log("===================================");
+	console.log("/withdraw");
+	try {
+		console.log("req.body", req.body);
+		const { userId, amount } = req.body;
+
+		const addToInvest = await FlenderUsersSchema.findByIdAndUpdate(
+			{ _id: userId },
+			{
+				$inc: { totalInvestments: amount },
+				$push: {
+					transactions: {
+						transactionType: "investment",
+						amountInEuro: amount,
+					},
+				},
+			},
+			{ new: true }
+		);
+		console.log("addToInvest: ", addToInvest);
+		console.log("invested successfully");
+
+		res.send(addToInvest);
+		return;
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({
+			error:
+				"error adding money to TOTAL INVESTMENTS for USER side, see server logs",
+		});
 	}
 });
 

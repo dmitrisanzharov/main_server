@@ -14,7 +14,6 @@ const PostSchemaOne = mongoose.Schema(
 		totalInvestments: { type: Number, default: 0 },
 		transactions: [
 			{
-				transactionId: String,
 				transactionType: {
 					type: String,
 					enum: ["lodgement", "withdrawal", "investment"],

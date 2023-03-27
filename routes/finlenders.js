@@ -42,7 +42,9 @@ router.post("/invest", async (req, res) => {
 		res.send("investment success");
 	} catch (error) {
 		console.log(error);
-		res.send("investment failed");
+		res.status(500).send({
+			message: "investment failed on FINLENDERS PROJECT SIDE, SEE LOGS",
+		});
 	}
 });
 
@@ -74,6 +76,32 @@ router.get("/single-project", async (req, res) => {
 	} catch (error) {
 		console.log("error during fetch", error);
 		res.status(500).send({ error: "some sort of error" });
+	}
+});
+
+router.post("/invest-flender-ts", async (req, res) => {
+	console.log("===================================");
+	console.log("/invest-flender-ts");
+	try {
+		console.log("req.body", req.body);
+		const { amount, projectId } = req.body;
+
+		const investFinlendersProject =
+			await FinlendersProjectsSchema.findByIdAndUpdate(
+				{ _id: projectId },
+				{
+					$inc: { totalFunded: amount },
+				},
+				{ new: true }
+			);
+
+		console.log("invested succefully on FINLENDERS SIDE");
+		res.send(investFinlendersProject);
+	} catch (error) {
+		console.log(error);
+		res.status(500).send({
+			error: "error adding investment on FINLENDERS SIDE, see server logs",
+		});
 	}
 });
 
