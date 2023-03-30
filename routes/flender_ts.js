@@ -219,7 +219,7 @@ router.get("/withdraw", async (req, res) => {
 
 router.post("/invest", async (req, res) => {
 	console.log("===================================");
-	console.log("/withdraw");
+	console.log("/invest");
 	try {
 		console.log("req.body", req.body);
 		const {
@@ -230,6 +230,8 @@ router.post("/invest", async (req, res) => {
 			loanInterestRate,
 			monthlyRepayment,
 			totalInterestOnThisInvestment,
+			projectName,
+			projectGrade,
 		} = req.body;
 
 		const addToInvest = await FlenderUsersSchema.findByIdAndUpdate(
@@ -241,10 +243,12 @@ router.post("/invest", async (req, res) => {
 						transactionType: "investment",
 						amountInEuro: amount,
 						loanId: projectId,
-						loanDurationInMonth: loanDurationInMonths,
+						loanDurationInMonths: loanDurationInMonths,
 						loanInterestRate: loanInterestRate,
 						monthlyRepayment: monthlyRepayment,
 						totalInterestOnThisInvestment: totalInterestOnThisInvestment,
+						projectName: projectName,
+						projectGrade: projectGrade,
 					},
 				},
 			},

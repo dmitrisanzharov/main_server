@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 
 const PostSchemaOne = mongoose.Schema(
 	{
@@ -20,7 +21,7 @@ const PostSchemaOne = mongoose.Schema(
 				},
 				transactionDate: {
 					type: Date,
-					default: Date.now(),
+					default: Date.now,
 				},
 				amountInEuro: Number,
 				loanId: String,
@@ -28,6 +29,8 @@ const PostSchemaOne = mongoose.Schema(
 				loanInterestRate: Number,
 				monthlyRepayment: Number,
 				totalInterestOnThisInvestment: Number,
+				projectName: String,
+				projectGrade: String,
 			},
 		],
 	},
