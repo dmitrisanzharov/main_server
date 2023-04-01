@@ -96,6 +96,9 @@ router.get("/password-reset-email-page", async (req, res) => {
 		const linkToResetPasswordDev =
 			"http://localhost:3000/password-reset-page" + `?email=${email}`;
 
+		const linkToResetPasswordPROD =
+			"http://localhost:3000/password-reset-page" + `?email=${email}`;
+
 		const doesItExist = await FlenderUsersSchema.findOne({ email: email });
 		console.log("doesItExist: ", doesItExist);
 
@@ -119,7 +122,7 @@ router.get("/password-reset-email-page", async (req, res) => {
 
 			let info = await transporter.sendMail({
 				from: "my_main_server@mail.ee", // sender address
-				to: "dmitrisanzharov@gmail.com", // list of receivers
+				to: "moneytreee2016@gmail.com", // list of receivers
 				subject: "Password reset link", // Subject line
 				html: `<h1>Here is your link</h1>
 				<a href=${linkToResetPasswordDev} target="_blank">link to reset password</a>`,
