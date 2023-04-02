@@ -97,7 +97,8 @@ router.get("/password-reset-email-page", async (req, res) => {
 			"http://localhost:3000/password-reset-page" + `?email=${email}`;
 
 		const linkToResetPasswordPROD =
-			"http://localhost:3000/password-reset-page" + `?email=${email}`;
+			"https://main-server-tgoe.onrender.com/password-reset-page" +
+			`?email=${email}`;
 
 		const doesItExist = await FlenderUsersSchema.findOne({ email: email });
 		console.log("doesItExist: ", doesItExist);
@@ -125,7 +126,7 @@ router.get("/password-reset-email-page", async (req, res) => {
 				to: "moneytreee2016@gmail.com", // list of receivers
 				subject: "Password reset link", // Subject line
 				html: `<h1>Here is your link</h1>
-				<a href=${linkToResetPasswordDev} target="_blank">link to reset password</a>`,
+				<a href=${linkToResetPasswordPROD} target="_blank">link to reset password</a>`,
 			});
 
 			console.log("Message sent: %s", info.messageId);
